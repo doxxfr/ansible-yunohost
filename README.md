@@ -59,7 +59,7 @@ Example Playbook
         update_cache: yes
 
   roles:
-     - { role: sylvainar.yunohost }
+     - { role: e_lie.ansible_yunohost }
 ```
 
 License

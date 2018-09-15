@@ -17,11 +17,11 @@
     mode: 700
   when: yunohost_file_install.stat.exists == False
 
-- name: Launch script
+- name: Yunohost script installation
   command: /tmp/install_yunohost.sh -a
   when: yunohost_file_install.stat.exists == False
 
-- name: Launch postinsstall
+- name: Yunohost post-installation
   shell: "
     yunohost tools postinstall \
       --domain {{ yunohost.domain }} \
@@ -37,6 +37,7 @@
 - name: Install certificates
   shell: yunohost domain cert-install
   changed_when: False
+  when: yunohost.install_certificates == True
 
 - name: Add users
   include: users.yml
