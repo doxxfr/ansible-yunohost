@@ -5,9 +5,11 @@
   changed_when: False
 
 - name: Format json of domains
-  set_fact: yunohost_installed_domains="{{ yunohost_installed_domains_raw.stdout | from_json }}"
+  set_fact:
+    yunohost_installed_domains: "{{ yunohost_installed_domains_raw.stdout | from_json }}"
 
 - name: Create domains
-  shell: yunohost domain add {{ item }} --admin-password {{ yunohost.password }}
-  with_items: "{{ yunohost.extra_domains }}"
+  shell: yunohost domain add {{ item }} --admin-password {{ ynh_admin_password }}
+  with_items: "{{ ynh_extra_domains }}"
   when: item not in yunohost_installed_domains.domains
+

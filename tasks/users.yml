@@ -1,18 +1,19 @@
 ---
-- name: List users
+- name: Get list of users JSON formatted
   shell: yunohost user list --output-as json
   register: yunohost_registered_users_raw
   changed_when: False
 
-- name: Format json of users
-  set_fact: yunohost_registered_users="{{ yunohost_registered_users_raw.stdout | from_json }}"
+- name: Set variable dict from json
+  set_fact:
+    yunohost_registered_users: "{{ yunohost_registered_users_raw.stdout | from_json }}"
 
 - name: Create missing users
-  shell: |
-    yunohost user create {{ item.name }} --admin-password {{ yunohost.password }} \
+  shell: >
+    yunohost user create {{ item.name }} --admin-password {{ ynh_admin_password }} \
     -f {{ item.firstname }} \
     -l {{ item.lastname }} \
     -m {{ item.mail }} \
     -p {{ item.pass }}
-  with_items: "{{ yunohost.users }}"
+  with_items: "{{ ynh_users }}"
   when: item.name not in yunohost_registered_users.users.keys()

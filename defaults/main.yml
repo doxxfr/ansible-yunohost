@@ -1,0 +1,12 @@
+ynh_install_script:
+  url: https://install.yunohost.org
+  checksum: sha256:e6acb05e048bba316b12b1c2cb11843cf4f0e42fdcb14433589c729b2b057b7b
+
+ynh_ignore_dyndns: False
+ynh_install_domain_certs: True
+
+ynh_extra_domains: ~
+ynh_apps: ~
+ynh_users: ~
+
+
