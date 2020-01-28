@@ -1,9 +1,18 @@
 # Keep script defaults for a production server
+
+ynh_ansible_straight_install: True
+
 ynh_install_script:
   url: https://install.yunohost.org
-  checksum: sha256:982bda27a012bfbf37235b10805e99817be6aedd27420fe33218bd54d502a57a
+  checksum: sha256:6d41ab6568e6482a2468baec136c135733e461dd05846915c14e84a34a5ae5b3
 
-ynh_install_domain_certs: True
+ynh_launch_post_installation: yes
+
+ynh_keep_ssh_conf_untouched: yes
+
+ynh_disable_fail2ban: no
+
+ynh_install_domain_certs: no
 
 ynh_main_domain: example.com
 ynh_extra_domains: ~
@@ -11,7 +20,7 @@ ynh_extra_domains: ~
 ynh_admin_password: MYINSECUREPWD_PLZ_OVERRIDE_THIS
 
 # When using yunohost autoconfigured domain names (e.g. noho.st), ignore the dyndns config
-ynh_ignore_dyndns_server: False
+ynh_ignore_dyndns: no
 
 # The list of users.
 ynh_users: ~

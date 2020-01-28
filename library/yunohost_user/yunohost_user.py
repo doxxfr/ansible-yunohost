@@ -11,9 +11,9 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = '''
 ---
-module: yunohost
+module: yunohost_user
 
-short_description: This is an intent at a YunoHost module
+short_description: Module to manage users in Yunohost based on Yunohost API
 
 version_added: "2.4"
 

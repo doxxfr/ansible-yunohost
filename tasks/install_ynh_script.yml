@@ -1,0 +1,11 @@
+- name: Download install script
+  get_url:
+    url: "{{ ynh_install_script.url }}"
+    dest: /tmp/install_yunohost.sh
+    mode: 700
+    checksum: "{{ ynh_install_script.checksum }}"
+  when: yunohost_file_install.stat.exists == False
+
+- name: Yunohost script installation
+  command: /tmp/install_yunohost.sh -a
+  when: yunohost_file_install.stat.exists == False

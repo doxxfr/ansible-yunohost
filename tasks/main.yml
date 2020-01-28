@@ -1,27 +1,49 @@
 ---
+- name: Wait for server availability
+  wait_for_connection:
+    delay: 5
+    timeout: 300
+
+- name: Test if Yunohost package is already installed
+  stat:
+    path: /usr/bin/yunohost
+  register: yunohost_installed
+
 - name: Install requirements
   apt:
     name:
       - git
       - dialog
     state: present
+    update_cache: yes
+  when: yunohost_installed.stat.exists == False
 
-- name: Test if Yunohost is already installed
+- name: Install Yunohost using Ansible
+  include_tasks: install_ynh_straight.yml
+  when: ynh_ansible_straight_install == True and yunohost_installed.stat.exists == False
+
+- name: Install Yunohost using official script
+  include_tasks: install_ynh_script.yml
+  when: ynh_ansible_straight_install == False and yunohost_installed.stat.exists == False
+
+- name: "Keep SSH Conf : Copy sshd config to avoid yunohost postinstall modifying it"
+  copy:
+    remote_src: yes
+    src: /etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config.before_yunohost
+  when: ynh_keep_ssh_conf_untouched == True
+
+- name: Test if Yunohost is already post-installed
   stat:
     path: /etc/yunohost/installed
   register: yunohost_file_install
 
-- name: Download install script
-  get_url:
-    url: "{{ ynh_install_script.url }}"
-    dest: /tmp/install_yunohost.sh
-    mode: 700
-    checksum: "{{ ynh_install_script.checksum }}"
-  when: yunohost_file_install.stat.exists == False
-
-- name: Yunohost script installation
-  command: /tmp/install_yunohost.sh -a
-  when: yunohost_file_install.stat.exists == False
+- name: Disable Fail2ban (annoying and no need for testing)
+  systemd:
+    name: fail2ban
+    state: stopped
+    enabled: no
+  when: ynh_disable_fail2ban == True
 
 - name: Yunohost post-installation
   shell: "
@@ -30,21 +52,24 @@
       --password {{ ynh_admin_password }} \
       {% if ynh_ignore_dyndns == True %} --ignore-dyndns {% endif %}
       "
-  when: yunohost_file_install.stat.exists == False
+  when: ynh_launch_post_installation == True and yunohost_file_install.stat.exists == False
 
-- name: Create domains
-  include: domains.yml
-  when: ynh_extra_domains
 
-- name: Install certificates
-  shell: yunohost domain cert-install
-  changed_when: False
-  when: ynh_install_domain_certs == True
 
-- name: Add users
-  include: users.yml
-  when: ynh_users
 
-- name: Install apps
-  include: apps.yml
-  when: ynh_apps
+# - name: Create domains
+#   include: domains.yml
+#   when: ynh_launch_post_installation == True and ynh_extra_domains
+
+# - name: Install certificates
+#   shell: yunohost domain cert-install
+#   changed_when: False
+#   when: ynh_launch_post_installation == True and ynh_install_domain_certs == True
+
+# - name: Add users
+#   include: users.yml
+#   when: ynh_launch_post_installation == True and ynh_users
+
+# - name: Install apps
+#   include: apps.yml
+#   when: ynh_launch_post_installation == True and ynh_apps

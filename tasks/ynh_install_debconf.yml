@@ -1,0 +1,122 @@
+# TODO use a loop
+
+- debconf:
+    name: slapd
+    question: slapd/password1
+    vtype: password
+    value: yunohost
+
+- debconf:
+    name: slapd
+    question: slapd/password2
+    vtype: password
+    value: yunohost
+
+- debconf:
+    name: slapd
+    question: slapd/domain
+    vtype: string
+    value: yunohost.org
+
+- debconf:
+    name: slapd
+    question: shared/organisation
+    vtype: string
+    value: yunohost.org
+
+- debconf:
+    name: slapd
+    question: slapd/allow_ldap_v2
+    vtype: boolean
+    value: 'false'
+
+- debconf:
+    name: slapd
+    question: slapd/invalid_config
+    vtype: boolean
+    value: 'true'
+
+- debconf:
+    name: slapd
+    question: slapd/backend
+    vtype: select
+    value: MDB
+
+- debconf:
+    name: postfix
+    question: postfix/main_mailer_type
+    vtype: select
+    value: Internet Site
+
+- debconf:
+    name: postfix
+    question: slapd/password1
+    vtype: password
+    value: yunohost
+
+- debconf:
+    name: postfix
+    question: postfix/mailname
+    vtype: string
+    value: /etc/mailname
+
+- debconf:
+    name: mariadb-server-10.1
+    question: mysql-server/root_password
+    vtype: password
+    value: yunohost
+
+- debconf:
+    name: mariadb-server-10.1
+    question: mysql-server/root_password_again
+    vtype: password
+    value: yunohost
+
+- debconf:
+    name: nslcd
+    question: nslcd/ldap-bindpw
+    vtype: password
+    value: '' 
+
+- debconf:
+    name: nslcd
+    question: nslcd/ldap-starttls
+    vtype: boolean
+    value: 'false'
+
+- debconf:
+    name: nslcd
+    question: nslcd/ldap-reqcert
+    vtype: select
+    value: ''
+
+- debconf:
+    name: nslcd
+    question: nslcd/ldap-uris
+    vtype: string
+    value: ldap://localhost/
+
+- debconf:
+    name: nslcd
+    question: nslcd/ldap-binddn
+    vtype: string
+    value: ''
+
+- debconf:
+    name: nslcd
+    question: nslcd/ldap-base
+    vtype: string
+    value: dc=yunohost,dc=org
+
+- debconf:
+    name: libnss-ldapd
+    question: libnss-ldapd/nsswitch
+    vtype: multiselect
+    value: group, passwd, shadow
+
+- debconf:
+    name: postsrsd
+    question: postsrsd/domain
+    vtype: string
+    value: yunohost.org
+

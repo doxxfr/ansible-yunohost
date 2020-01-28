@@ -5,10 +5,26 @@ Deploy Yunohost with Ansible !
 
 <!-- [![Build Status](https://travis-ci.org/)](https://travis-ci.org/) -->
 
+
 Requirements
 ------------
 
 - Vanilla Debian Stretch server with passwordless sudo or root access
+
+Installation
+------------
+
+Install this role inside your ansible IaC project:
+
+- Create a file `requirements.yml` in `roles` folder with content:
+
+```yaml
+- src: https://github.com/e-lie/ansible-yunohost
+  name: e-lie.yunohost
+```
+
+- Use `ansible-galaxy install -r roles/requirements.yml -p roles` to download the role.
+
 
 Role Variables
 --------------
@@ -29,7 +45,7 @@ Example Playbook
         update_cache: yes
 
   roles:
-    - role: e_lie.ansible_yunohost
+    - role: e-lie.yunohost
       vars:
         ynh_install_script:
 

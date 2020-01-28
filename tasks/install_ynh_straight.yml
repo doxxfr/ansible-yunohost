@@ -1,0 +1,42 @@
+- name: upgrade system
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: install dependencies
+  apt:
+    name:
+      - lsb-release
+      - wget
+      - whiptail
+      - gnupg
+      - apt-transport-https
+
+- name: add ynh repository key
+  apt_key:
+    url: https://forge.yunohost.org/yunohost.asc
+    # id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+  # register: add_repository_key
+  # ignore_errors: "{{ docker_apt_ignore_key_error }}"
+
+- name: install ynh apt repository
+  apt_repository:
+    repo: deb http://forge.yunohost.org/debian/ stretch stable
+    state: present
+    update_cache: true
+
+- name: Ynh debconf pkgs
+  include_tasks: ynh_install_debconf.yml
+
+
+
+- name: install ynh packages
+  apt:
+    name:
+      - debhelper
+      - dh-autoreconf
+      - yunohost
+      - yunohost-admin
+      - postfix
+  ignore_errors: yes
