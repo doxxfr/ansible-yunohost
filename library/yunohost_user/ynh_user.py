@@ -1,7 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-# Copyright: (c) 2018, Terry Jones <terry.jones@example.org>
+# Copyright: (c) 2021, Uptime <terry.jones@example.org>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+# https://github.com/YunoHost/yunohost/pull/951#issue-604908363
+from ansible.module_utils.basic import AnsibleModule
+from yunohost.user import user_create
+import yunohost
+import sys
+sys.path.insert(0, "/usr/lib/moulinette/")
+# possibly set debug=True if needed, but when writing script supposedly you ain't debugging yunohost itself, and full log is still available in yunohost-cli.log and yunohost log list...
+yunohost.init_logging()
+yunohost.init_i18n()
+
+# user_create(username="foo", ...)
+
 
 ANSIBLE_METADATA = {
     'metadata_version': '1.1',
@@ -11,9 +24,9 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = '''
 ---
-module: yunohost_user
+module: ynh_user
 
-short_description: Module to manage users in Yunohost based on Yunohost API
+short_description: Module to manage users in Yunohost based on Yunohost Python library
 
 version_added: "2.4"
 
@@ -66,7 +79,6 @@ author:
 #     returned: always
 # '''
 
-from ansible.module_utils.basic import AnsibleModule
 
 def run_module():
     # define available arguments/parameters a user can pass to the module
@@ -121,8 +133,10 @@ def run_module():
     # simple AnsibleModule.exit_json(), passing the key/value results
     module.exit_json(**result)
 
+
 def main():
     run_module()
+
 
 if __name__ == '__main__':
     main()
